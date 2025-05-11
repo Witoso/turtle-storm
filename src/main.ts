@@ -1,7 +1,34 @@
 import "./style.css";
 import RealTurtle from "real-turtle";
 
+interface State {
+  commandHistory: string[];
+}
+
+const state: State = {
+  commandHistory: [],
+};
+
+type Subscriber = () => void;
+const subscribers: Subscriber[] = [];
+
+function subscribe(subscriber: Subscriber) {
+  subscribers.push(subscriber);
+}
+
+function notifySubscribers() {
+  subscribers.forEach((subscriber) => subscriber());
+}
+
+function addCommandToHistory(command: string) {
+  state.commandHistory.push(command);
+  notifySubscribers();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  subscribe(() => {
+    console.log("State updated:", state);
+  });
   // Initialize the turtle
   const canvas = document.getElementById("turtleCanvas") as HTMLCanvasElement;
   const turtle = new RealTurtle(canvas, {
@@ -16,9 +43,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   executeButton.onclick = () => {
     const command = input.value;
-    try {
-      eval(`turtle.${command}`);
-      turtle.start();
+    addCommandToHistory(command);
+    input.value = '';
+  };
+
+  const executeCommands = () => {
+    state.commandHistory.forEach((cmd) => {
+      try {
+        eval(`turtle.${cmd}`);
+      } catch (error) {
+        console.error("Invalid command in history:", error);
+      }
+    });
+    turtle.start();
+  };
+
+  executeButton.onclick = () => {
+    const command = input.value;
+    addCommandToHistory(command);
+    executeCommands();
     } catch (error) {
       console.error("Invalid command:", error);
     }
