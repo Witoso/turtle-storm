@@ -29,35 +29,24 @@ document.addEventListener("DOMContentLoaded", () => {
   subscribe(() => {
     console.log("State updated:", state);
   });
-  // Initialize the turtle
-  const canvas = document.getElementById("turtleCanvas") as HTMLCanvasElement;
-  const turtle = new RealTurtle(canvas, {
-    centerOnCanvas: true,
-    autostart: true,
-  });
+  let turtle: RealTurtle | null = null;
+
+  const createTurtle = () => {
+    const canvas = document.getElementById("turtleCanvas") as HTMLCanvasElement;
+    if (turtle) {
+      turtle.clear();
+    }
+    turtle = new RealTurtle(canvas, {
+      centerOnCanvas: true,
+      autostart: true,
+    });
+  };
 
   const input = document.getElementById("commandInput") as HTMLInputElement;
-  const executeButton = document.getElementById(
-    "executeCommand",
-  ) as HTMLButtonElement;
-
-  executeButton.onclick = () => {
-    const command = input.value;
-    addCommandToHistory(command);
-    input.value = "";
-  };
-
-  const resetTurtle = () => {
-    turtle.setPosition(0, 0);
-  };
-
-  const clearCanvas = () => {
-    turtle.clear();
-  };
+  const executeButton = document.getElementById("executeCommand") as HTMLButtonElement;
 
   const executeCommands = () => {
-    resetTurtle();
-    clearCanvas();
+    createTurtle();
     state.commandHistory.forEach((cmd) => {
       try {
         eval(`turtle.${cmd}`);
@@ -70,11 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   executeButton.onclick = () => {
     const command = input.value;
-    try {
-      addCommandToHistory(command);
-      executeCommands();
-    } catch (error) {
-      console.error("Invalid command:", error);
-    }
+    addCommandToHistory(command);
+    executeCommands();
+    input.value = "";
   };
 });
