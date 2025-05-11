@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const createTurtle = () => {
     const canvas = document.getElementById("turtleCanvas") as HTMLCanvasElement;
-    if (turtle) {
-      console.log("here");
-      turtle.clear();
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     turtle = new RealTurtle(canvas, {
       centerOnCanvas: true,
