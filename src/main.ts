@@ -34,16 +34,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const createTurtle = () => {
     const canvas = document.getElementById("turtleCanvas") as HTMLCanvasElement;
     if (turtle) {
+      console.log("here");
       turtle.clear();
     }
     turtle = new RealTurtle(canvas, {
       centerOnCanvas: true,
-      autostart: true,
     });
   };
 
   const input = document.getElementById("commandInput") as HTMLInputElement;
-  const executeButton = document.getElementById("executeCommand") as HTMLButtonElement;
+  const executeButton = document.getElementById(
+    "executeCommand",
+  ) as HTMLButtonElement;
 
   const executeCommands = () => {
     createTurtle();
