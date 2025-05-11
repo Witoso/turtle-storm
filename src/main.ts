@@ -47,7 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
     input.value = "";
   };
 
+  const clearCanvas = () => {
+    turtle.clear();
+  };
+
   const executeCommands = () => {
+    clearCanvas();
     state.commandHistory.forEach((cmd) => {
       try {
         eval(`turtle.${cmd}`);
