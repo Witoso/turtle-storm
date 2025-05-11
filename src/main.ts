@@ -60,8 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   executeButton.onclick = () => {
     const command = input.value;
-    addCommandToHistory(command);
-    executeCommands();
+    try {
+      addCommandToHistory(command);
+      executeCommands();
+    } catch (error) {
+      console.error("Invalid command:", error);
+    }
     } catch (error) {
       console.error("Invalid command:", error);
     }
