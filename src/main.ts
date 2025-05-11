@@ -47,11 +47,16 @@ document.addEventListener("DOMContentLoaded", () => {
     input.value = "";
   };
 
+  const resetTurtle = () => {
+    turtle.setPosition(0, 0);
+  };
+
   const clearCanvas = () => {
     turtle.clear();
   };
 
   const executeCommands = () => {
+    resetTurtle();
     clearCanvas();
     state.commandHistory.forEach((cmd) => {
       try {
