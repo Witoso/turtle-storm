@@ -9,26 +9,37 @@ const state: State = {
   commandHistory: [],
 };
 
-type Subscriber = () => void;
-const subscribers: Subscriber[] = [];
+class CommandHistory {
+  private state: State;
 
-function subscribe(subscriber: Subscriber) {
-  subscribers.push(subscriber);
-}
+  constructor() {
+    this.state = { commandHistory: [] };
+    document.addEventListener("commandEvent", (event: CustomEvent) => {
+      this.addCommand(event.detail);
+      this.executeCommands();
+    });
+  }
 
-function notifySubscribers() {
-  subscribers.forEach((subscriber) => subscriber());
-}
+  private addCommand(command: string) {
+    this.state.commandHistory.push(command);
+    console.log("State updated:", this.state);
+  }
 
-function addCommandToHistory(command: string) {
-  state.commandHistory.push(command);
-  notifySubscribers();
+  private executeCommands() {
+    createTurtle();
+    this.state.commandHistory.forEach((cmd) => {
+      try {
+        eval(`turtle.${cmd}`);
+      } catch (error) {
+        console.error("Invalid command in history:", error);
+      }
+    });
+    turtle.start();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  subscribe(() => {
-    console.log("State updated:", state);
-  });
+  const commandHistory = new CommandHistory();
   let turtle: RealTurtle | null = null;
 
   const createTurtle = () => {
@@ -61,8 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   executeButton.onclick = () => {
     const command = input.value;
-    addCommandToHistory(command);
-    executeCommands();
+    const commandEvent = new CustomEvent("commandEvent", { detail: command });
+    document.dispatchEvent(commandEvent);
     input.value = "";
   };
 });
