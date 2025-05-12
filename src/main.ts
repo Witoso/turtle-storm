@@ -1,5 +1,7 @@
 import RealTurtle from "real-turtle";
 
+class EventDispatcher extends EventTarget {}
+
 interface State {
   commandHistory: string[];
 }
@@ -7,10 +9,12 @@ interface State {
 class CommandHistory {
   private state: State;
   private turtle: RealTurtle;
+  private eventDispatcher: EventDispatcher;
 
-  constructor() {
+  constructor(eventDispatcher: EventDispatcher) {
     this.state = { commandHistory: [] };
-    document.addEventListener("commandEvent", (event: CustomEvent) => {
+    this.eventDispatcher = eventDispatcher;
+    this.eventDispatcher.addEventListener("commandEvent", (event: CustomEvent) => {
       this.addCommand(event.detail);
       this.executeCommands();
     });
@@ -46,7 +50,8 @@ class CommandHistory {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const commandHistory = new CommandHistory();
+  const eventDispatcher = new EventDispatcher();
+  const commandHistory = new CommandHistory(eventDispatcher);
 
   const input = document.getElementById("commandInput") as HTMLInputElement;
   const executeButton = document.getElementById(
@@ -56,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   executeButton.onclick = () => {
     const command = input.value;
     const commandEvent = new CustomEvent("commandEvent", { detail: command });
-    document.dispatchEvent(commandEvent);
+    eventDispatcher.dispatchEvent(commandEvent);
     input.value = "";
   };
 });
