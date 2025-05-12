@@ -19,8 +19,9 @@ class CommandHistory {
 
   constructor(stateStore: StateStore) {
     this.state = { commandHistory: [] };
-    stateStore.addEventListener("commandEvent", (event: CustomEvent) => {
-      this.addCommand(event.detail);
+    stateStore.addEventListener("commandEvent", (event) => {
+      const customEvent = event as CustomEvent;
+      this.addCommand(customEvent.detail);
       this.executeCommands();
     });
   }
