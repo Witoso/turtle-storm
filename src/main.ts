@@ -6,15 +6,20 @@ interface State {
   commandHistory: string[];
 }
 
+class StateStore extends EventTarget {
+  executeCommand(command: string) {
+    const commandEvent = new CustomEvent("commandEvent", { detail: command });
+    this.dispatchEvent(commandEvent);
+  }
+}
+
 class CommandHistory {
   private state: State;
   private turtle: RealTurtle;
-  private eventDispatcher: EventDispatcher;
 
-  constructor(eventDispatcher: EventDispatcher) {
+  constructor(stateStore: StateStore) {
     this.state = { commandHistory: [] };
-    this.eventDispatcher = eventDispatcher;
-    this.eventDispatcher.addEventListener("commandEvent", (event: CustomEvent) => {
+    stateStore.addEventListener("commandEvent", (event: CustomEvent) => {
       this.addCommand(event.detail);
       this.executeCommands();
     });
@@ -50,8 +55,8 @@ class CommandHistory {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const eventDispatcher = new EventDispatcher();
-  const commandHistory = new CommandHistory(eventDispatcher);
+  const stateStore = new StateStore();
+  const commandHistory = new CommandHistory(stateStore);
 
   const input = document.getElementById("commandInput") as HTMLInputElement;
   const executeButton = document.getElementById(
@@ -60,8 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   executeButton.onclick = () => {
     const command = input.value;
-    const commandEvent = new CustomEvent("commandEvent", { detail: command });
-    eventDispatcher.dispatchEvent(commandEvent);
+    stateStore.executeCommand(command);
     input.value = "";
   };
 });
