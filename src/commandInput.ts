@@ -19,33 +19,20 @@ export class CommandInput extends HTMLElement {
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-
       const formData = new FormData(form);
-
-      // Convert to plain object (optional)
       const data = Object.fromEntries(formData.entries());
-      console.log(data.command);
 
       //TODO translations of inputs to commands
       //TODO command validation
 
-      if (typeof data.command === "string") {
+      if (typeof data.command === "string" && data.command.trim() !== "") {
         eventBus.emit("command:execute", data.command);
       }
 
       input.value = "";
     });
 
-    const reset = document.createElement("button");
-    reset.textContent = "Reset";
-    reset.type = "submit";
-    reset.classList.add("outline");
-
-    reset.addEventListener("click", () => {
-      eventBus.emit("reset", null);
-    });
-
-    form.append(input, run, reset);
+    form.append(input, run);
     this.append(form);
   }
 }

@@ -1,12 +1,43 @@
-import RealTurtle from "real-turtle";
 import { eventBus } from "./events";
 
 export class CommandHistory extends HTMLElement {
   private commandsHistory: string[] = [];
-  private turtle: RealTurtle | undefined;
+  private listElement: HTMLOListElement;
 
   constructor() {
     super();
+    
+    // Create header container
+    const headerContainer = document.createElement('div');
+    headerContainer.style.display = 'flex';
+    headerContainer.style.justifyContent = 'space-between';
+    headerContainer.style.alignItems = 'center';
+    headerContainer.style.marginBottom = 'var(--pico-spacing)';
+    
+    // Create heading
+    const heading = document.createElement('h3');
+    heading.textContent = 'Command History';
+    heading.classList.add('commands-heading');
+    heading.style.margin = '0'; // Override default margin since we're using flex
+    
+    // Create reset button
+    const reset = document.createElement("button");
+    reset.textContent = "Reset";
+    reset.classList.add("outline");
+    reset.style.marginLeft = 'var(--pico-spacing)';
+    
+    reset.addEventListener("click", () => {
+      eventBus.emit("reset", null);
+    });
+    
+    // Append elements to header container
+    headerContainer.append(heading, reset);
+    this.append(headerContainer);
+    
+    // Create and append list
+    this.listElement = document.createElement('ol');
+    this.listElement.classList.add('commands-list');
+    this.append(this.listElement);
 
     eventBus.on("command:execute", (cmd) => {
       this.addCommand(cmd);
@@ -15,51 +46,27 @@ export class CommandHistory extends HTMLElement {
 
     eventBus.on("reset", () => {
       this.commandsHistory = [];
-      this.createTurtle();
+      this.renderCommands();
+      eventBus.emit("turtle:draw", []);
     });
-  }
-
-  connectedCallback() {
-    this.executeCommands();
   }
 
   private addCommand(command: string) {
     this.commandsHistory.push(command);
+    this.renderCommands();
   }
 
   private executeCommands() {
-    this.createTurtle();
-    this.commandsHistory.forEach((cmd) => {
-      if (!cmd) return;
-      try {
-        eval(`this.turtle.${cmd}`);
-      } catch (error) {
-        console.error("Invalid command in history:", error);
-      }
-    });
-    this.turtle.start();
+    eventBus.emit("turtle:draw", this.commandsHistory);
   }
 
-  private createTurtle() {
-    const canvas = document.getElementById(
-      "turtle-canvas",
-    ) as HTMLCanvasElement;
-
-    const scale = window.devicePixelRatio || 1;
-
-    canvas.width = 800 * scale;
-    canvas.height = 400 * scale;
-
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    this.turtle = new RealTurtle(canvas, {
-      centerOnCanvas: true,
+  private renderCommands() {
+    this.listElement.innerHTML = '';
+    this.commandsHistory.forEach((cmd) => {
+      const commandItem = document.createElement('li');
+      commandItem.classList.add('command-item');
+      commandItem.textContent = cmd;
+      this.listElement.appendChild(commandItem);
     });
-
-    this.turtle.setSize(20 * scale);
-    this.turtle.setLineWidth(5);
   }
 }

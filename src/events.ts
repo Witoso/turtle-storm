@@ -1,5 +1,6 @@
 type EventMap = {
   "command:execute": string;
+  "turtle:draw": string[];
   reset: null;
 };
 

@@ -19,5 +19,35 @@
 command-history {
   flex: 1;
   overflow: auto; /* enables scroll if content overflows */
-  padding-left: var(--pico-spacing);
+  padding: var(--pico-spacing);
+  border: var(--pico-border-width) solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  background-color: var(--pico-background-color);
+  margin-left: var(--pico-spacing);
+}
+
+.commands-heading {
+  margin: 0 0 var(--pico-spacing) 0;
+  padding-bottom: var(--pico-spacing-s);
+  border-bottom: var(--pico-border-width) solid var(--pico-muted-border-color);
+  font-size: 1.2em;
+  color: var(--pico-color);
+}
+
+.commands-list {
+  height: 100%;
+  overflow-y: auto;
+  list-style-position: inside;
+  padding: 0;
+  margin: 0;
+}
+
+.command-item {
+  padding: var(--pico-spacing-s);
+  border-bottom: var(--pico-border-width) solid var(--pico-muted-border-color);
+  font-family: var(--pico-font-family-monospace);
+}
+
+.command-item:last-child {
+  border-bottom: none;
 }
