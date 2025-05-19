@@ -7,13 +7,14 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div>
+    <main class="container-fluid">
       <h1>Turtle Graphics Demo</h1>
-      <canvas id="turtleCanvas" width="600" height="400"></canvas>
-      <input type="text" id="commandInput" placeholder="Enter command e.g., forward(100)" />
-      <button id="executeCommand">Execute Command</button>
-      <p class="read-the-docs">Watch the turtle draw a simple pattern</p>
-    </div>
+      <div class="turtle-storm">
+        <canvas id="turtle-canvas"></canvas>
+        <command-history></command-history>
+      </div>
+      <command-input></command-input>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

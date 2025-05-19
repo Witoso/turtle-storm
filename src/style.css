@@ -1,0 +1,23 @@
+.turtle-storm {
+  display: flex;
+  width: 100%;
+  height: 400px; /* match canvas height or use auto */
+  overflow: hidden;
+
+  margin-bottom: var(--pico-spacing);
+}
+
+#turtle-canvas {
+  background-color: white;
+  border: var(--pico-border-width) solid black;
+  border-radius: var(--pico-border-radius);
+  width: 800px;
+  height: 400px;
+  flex-shrink: 0; /* prevent shrinking */
+}
+
+command-history {
+  flex: 1;
+  overflow: auto; /* enables scroll if content overflows */
+  padding-left: var(--pico-spacing);
+}

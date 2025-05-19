@@ -1,4 +1,4 @@
-declare module 'real-turtle' {
+declare module "real-turtle" {
   interface TurtleOptions {
     centerOnCanvas?: boolean;
     speed?: number;
@@ -26,7 +26,12 @@ declare module 'real-turtle' {
     right(degrees: number): Promise<void> | void;
     rt(degrees: number): Promise<void> | void;
     turn(degrees: number): Promise<void> | void;
-    arc(radius: number, angle: number, counterclockwise?: boolean): Promise<void> | void;
+    arc(
+      radius: number,
+      angle: number,
+      counterclockwise?: boolean,
+    ): Promise<void> | void;
+    start(): Promise<void> | void;
 
     // Drawing
     penDown(): Promise<void> | void;
@@ -60,4 +65,4 @@ declare module 'real-turtle' {
     sleep(milliseconds: number): Promise<void> | void;
     eval(func: () => unknown): Promise<void> | void;
   }
-} 
+}
