@@ -35,7 +35,6 @@ command-history {
 }
 
 .commands-list {
-  height: 100%;
   overflow-y: auto;
   list-style-position: inside;
   padding: 0;

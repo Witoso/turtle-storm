@@ -1,5 +1,5 @@
 import RealTurtle from "real-turtle";
-import { eventBus } from "./events";
+import { eventBus } from "../../core/events";
 
 export class TurtleCanvas extends HTMLElement {
   private turtle: RealTurtle | undefined

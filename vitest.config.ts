@@ -11,6 +11,5 @@ export default defineConfig({
     },
     include: ['src/**/*.{test,spec}.{js,ts}'],
     globals: true,
-    setupFiles: ['src/test/setup.ts'],
   },
 });

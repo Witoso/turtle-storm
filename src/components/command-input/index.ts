@@ -1,4 +1,4 @@
-import { eventBus } from "./events";
+import { eventBus } from "../../core/events";
 
 export class CommandInput extends HTMLElement {
   connectedCallback() {

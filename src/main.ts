@@ -1,9 +1,9 @@
-import { CommandHistory } from "./commandHistory";
-import { CommandInput } from "./commandInput";
-import { TurtleCanvas } from "./turtleCanvas";
+import { CommandHistory } from "./components/command-history";
+import { CommandInput } from "./components/command-input";
+import { TurtleCanvas } from "./components/turtle-canvas";
 
 import "@picocss/pico/css/pico.css";
-import "./style.css";
+import "./styles/main.css";
 
 customElements.define("command-history", CommandHistory);
 customElements.define("command-input", CommandInput);

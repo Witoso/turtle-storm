@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { Store } from './state';
+import { Store } from '.';
 
 describe('Store', () => {
   it('should initialize with default state', () => {
