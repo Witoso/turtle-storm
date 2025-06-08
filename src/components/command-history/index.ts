@@ -3,11 +3,18 @@ import "./styles.css";
 
 export class CommandHistory extends HTMLElement {
   private commandsHistory: string[] = [];
-  private listElement: HTMLOListElement;
+  private listElement!: HTMLOListElement;
 
   constructor() {
     super();
-    
+  }
+
+  connectedCallback() {
+    this.initialize();
+    this.setupEventListeners();
+  }
+
+  private initialize() {
     // Create header container
     const headerContainer = document.createElement('div');
     headerContainer.style.display = 'flex';
@@ -39,7 +46,9 @@ export class CommandHistory extends HTMLElement {
     this.listElement = document.createElement('ol');
     this.listElement.classList.add('commands-list');
     this.append(this.listElement);
+  }
 
+  private setupEventListeners() {
     eventBus.on("command:execute", (cmd) => {
       this.addCommand(cmd);
       this.executeCommands();
