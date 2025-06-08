@@ -53,7 +53,9 @@ export class TurtleCanvas extends HTMLElement {
       centerOnCanvas: true,
     });
 
-    this.turtle.setSize(20 * scale);
+	this.turtle.setImage("./turtle.png");
+
+    this.turtle.setSize(50 * scale);
     this.turtle.setLineWidth(5);
 
   }

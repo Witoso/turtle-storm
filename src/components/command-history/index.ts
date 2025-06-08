@@ -17,22 +17,17 @@ export class CommandHistory extends HTMLElement {
   private initialize() {
     // Create header container
     const headerContainer = document.createElement('div');
-    headerContainer.style.display = 'flex';
-    headerContainer.style.justifyContent = 'space-between';
-    headerContainer.style.alignItems = 'center';
-    headerContainer.style.marginBottom = 'var(--pico-spacing)';
+    headerContainer.classList.add('header-container');
     
     // Create heading
     const heading = document.createElement('h3');
     heading.textContent = 'Command History';
     heading.classList.add('commands-heading');
-    heading.style.margin = '0'; // Override default margin since we're using flex
     
     // Create reset button
     const reset = document.createElement("button");
     reset.textContent = "Reset";
-    reset.classList.add("outline");
-    reset.style.marginLeft = 'var(--pico-spacing)';
+    reset.classList.add("outline", "reset-button");
     
     reset.addEventListener("click", () => {
       eventBus.emit("reset", null);
