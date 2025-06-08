@@ -21,7 +21,7 @@ describe('CommandHistory', () => {
   });
 
   it('should render initial empty state correctly', () => {
-    const heading = element.querySelector('h3');
+    const heading = element.querySelector('h3.commands-heading');
     const resetButton = element.querySelector('button.outline');
     const commandsList = element.querySelector('.commands-list');
     
