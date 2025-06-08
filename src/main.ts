@@ -3,7 +3,7 @@ import { CommandInput } from "./components/command-input";
 import { TurtleCanvas } from "./components/turtle-canvas";
 
 import "@picocss/pico/css/pico.css";
-import "./styles/main.css";
+import "./styles/layout.css";
 
 customElements.define("command-history", CommandHistory);
 customElements.define("command-input", CommandInput);

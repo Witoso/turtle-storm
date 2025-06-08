@@ -1,4 +1,5 @@
 import { eventBus } from "../../core/events";
+import "./styles.css";
 
 export class CommandHistory extends HTMLElement {
   private commandsHistory: string[] = [];

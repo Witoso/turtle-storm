@@ -1,0 +1,8 @@
+#turtle-canvas {
+  background-color: white;
+  border: var(--pico-border-width) solid black;
+  border-radius: var(--pico-border-radius);
+  width: 800px;
+  height: 400px;
+  flex-shrink: 0; /* prevent shrinking */
+}
