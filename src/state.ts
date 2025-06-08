@@ -1,5 +1,4 @@
 type AppState = {
-  user: { username: string } | null;
   commandResult: string | null;
 };
 
@@ -8,7 +7,7 @@ type StateListener = () => void;
 export class Store {
   private state: AppState;
   private listeners = new Set<StateListener>();
-  private readonly STORAGE_KEY = "appState";
+  private readonly STORAGE_KEY = "turtle_storm_state";
 
   constructor(initial: AppState) {
     const saved = localStorage.getItem(this.STORAGE_KEY);
@@ -40,7 +39,7 @@ export class Store {
 
   reset() {
     localStorage.removeItem(this.STORAGE_KEY);
-    this.state = { user: null, commandResult: null };
+    this.state = { commandResult: null };
     this.notify();
   }
 }
