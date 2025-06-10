@@ -3,7 +3,8 @@ import { eventBus } from "../../core/events";
 import "./styles.css";
 
 export class TurtleCanvas extends HTMLElement {
-  private turtle: RealTurtle | undefined
+  private turtle: RealTurtle | undefined;
+  private canvas: HTMLCanvasElement | undefined;
 
   constructor() {
     super();
@@ -18,7 +19,14 @@ export class TurtleCanvas extends HTMLElement {
   }
 
   connectedCallback() {
+    this.canvas = document.createElement('canvas');
+    this.canvas.id = 'turtle-canvas';
+    this.appendChild(this.canvas);
     this.executeCommands([]); // Empty command list to initialize the turtle on the canvas.
+  }
+
+  disconnectedCallback() {
+    this.canvas?.remove();
   }
 
   private executeCommands(commands: string[]) {
@@ -36,20 +44,20 @@ export class TurtleCanvas extends HTMLElement {
   }
 
   private createTurtle() {
-    const canvas = document.getElementById("turtle-canvas") as HTMLCanvasElement;
+    if (!this.canvas) return;
     
 	// Important for scaling on high DPI screens.
 	const scale = window.devicePixelRatio || 1;
 
-    canvas.width = 800 * scale;
-    canvas.height = 400 * scale;
+    this.canvas.width = 800 * scale;
+    this.canvas.height = 400 * scale;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = this.canvas.getContext("2d");
     if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    this.turtle = new RealTurtle(canvas, {
+    this.turtle = new RealTurtle(this.canvas, {
       centerOnCanvas: true,
     });
 
