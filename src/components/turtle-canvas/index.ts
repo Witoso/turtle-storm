@@ -33,6 +33,15 @@ export class TurtleCanvas extends HTMLElement {
     this.createTurtle();
     commands.forEach((cmd) => {
       if (!cmd) return;
+
+	  if (cmd === "hide()") {
+		this.turtle?.setIcon("");
+	  }
+
+	  if (cmd === "show()") {
+		this.turtle?.setImage("./turtle.png");
+	  }
+
       try {
         eval(`this.turtle.${cmd}`);
       } catch (error) {

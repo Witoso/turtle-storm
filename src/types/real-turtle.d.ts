@@ -64,5 +64,9 @@ declare module "real-turtle" {
     // Programmatic functions
     sleep(milliseconds: number): Promise<void> | void;
     eval(func: () => unknown): Promise<void> | void;
+
+	// Custom functions
+	hide(): Promise<void> | void;
+	show(): Promise<void> | void;
   }
 }
