@@ -11,7 +11,7 @@ I'm an experienced developer, but let me know things that I might not know about
 
 ## Project
 
-I want to use Vanilla JS SPA, with web components in the browser.
+I want to use Vanilla JS SPA (Vite), with web components in the browser. There will be no server.
 
 ## Instructions for Copilot
 
@@ -19,4 +19,4 @@ I want to use Vanilla JS SPA, with web components in the browser.
 * Use web components for the UI.
 * Use the latest web APIs.
 * I use Pico CSS for styling but we can add additional styles if needed.
-* Use Vitest for testing, and try to keep tests close to the browser environment.
+* Use Vitest for testing (browser mode), and try to keep tests close to the browser environment.

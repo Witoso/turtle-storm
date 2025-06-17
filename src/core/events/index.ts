@@ -1,6 +1,8 @@
-type EventMap = {
+export type EventMap = {
   "command:execute": string;
   "turtle:draw": string[];
+  "language:change": string;
+  "language:changed": string;
   reset: null;
 };
 

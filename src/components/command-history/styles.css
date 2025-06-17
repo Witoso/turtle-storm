@@ -20,13 +20,13 @@
   margin: 0;
 }
 
-.command-item {
+.history-command-item {
   padding: var(--pico-spacing-s);
   border-bottom: var(--pico-border-width) solid var(--pico-muted-border-color);
   font-family: var(--pico-font-family-monospace);
 }
 
-.command-item:last-child {
+.history-command-item:last-child {
   border-bottom: none;
 }
 

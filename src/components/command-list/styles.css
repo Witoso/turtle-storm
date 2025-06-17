@@ -1,0 +1,119 @@
+.command-list {
+  margin-top: 2rem;
+}
+
+.command-category {
+  margin-bottom: 1rem;
+  border: 1px solid var(--pico-border-color);
+  border-radius: var(--pico-border-radius);
+}
+
+.command-category summary {
+  padding: 1rem;
+  cursor: pointer;
+  background: var(--pico-card-background-color);
+  border-radius: var(--pico-border-radius);
+  font-weight: 600;
+  margin: 0;
+}
+
+.command-category summary:hover {
+  background: var(--pico-secondary-background);
+}
+
+.command-category[open] summary {
+  border-bottom: 1px solid var(--pico-border-color);
+  border-radius: var(--pico-border-radius) var(--pico-border-radius) 0 0;
+}
+
+.commands-container {
+  padding: 1rem;
+  background: var(--pico-background-color);
+}
+
+.list-command-item {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--pico-secondary-border);
+  border-radius: var(--pico-border-radius);
+  background: var(--pico-card-background-color);
+}
+
+.list-command-item:last-child {
+  margin-bottom: 0;
+}
+
+.command-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.command-name {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--pico-primary);
+}
+
+.aliases {
+  color: var(--pico-muted-color);
+  font-style: italic;
+}
+
+.command-description {
+  margin: 0.5rem 0;
+  color: var(--pico-color);
+}
+
+.command-parameters,
+.command-examples {
+  margin-top: 1rem;
+}
+
+.command-parameters strong,
+.command-examples strong {
+  color: var(--pico-primary);
+  font-size: 0.9rem;
+}
+
+.command-parameters ul,
+.command-examples ul {
+  margin: 0.5rem 0 0 1rem;
+  padding: 0;
+}
+
+.command-parameters li,
+.command-examples li {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.command-parameters code,
+.command-examples code {
+  background: var(--pico-code-background-color);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.command-examples code {
+  color: var(--pico-primary);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .command-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .list-command-item {
+    padding: 0.75rem;
+  }
+  
+  .commands-container {
+    padding: 0.75rem;
+  }
+} 

@@ -1,4 +1,24 @@
-import type { CommandRegistry } from '../types/command-metadata.js';
+export interface CommandParameter {
+	name: string;
+	type: 'number' | 'string' | 'boolean';
+	required: boolean;
+	default?: string | number | boolean;
+  }
+  
+  export interface CommandMetadata {
+	name: string;
+	aliases: string[];
+	parameters: CommandParameter[];
+	category: 'movement' | 'drawing' | 'visual' | 'appearance' | 'programmatic' | 'custom';
+	descriptionKey: string;
+	examples: string[];
+  }
+  
+  export interface CommandRegistry {
+	[commandName: string]: CommandMetadata;
+  }
+  
+
 
 export const commandRegistry: CommandRegistry = {
   // Movement commands
@@ -13,16 +33,6 @@ export const commandRegistry: CommandRegistry = {
     examples: ['forward(100)', 'fd(50)', 'forward(200)']
   },
   
-  fd: {
-    name: 'fd',
-    aliases: ['forward', 'move'],
-    parameters: [
-      { name: 'steps', type: 'number', required: true }
-    ],
-    category: 'movement',
-    descriptionKey: 'commands.forward.description',
-    examples: ['fd(100)', 'forward(50)']
-  },
 
   move: {
     name: 'move',
@@ -46,16 +56,7 @@ export const commandRegistry: CommandRegistry = {
     examples: ['back(100)', 'bk(50)']
   },
 
-  bk: {
-    name: 'bk',
-    aliases: ['back'],
-    parameters: [
-      { name: 'steps', type: 'number', required: true }
-    ],
-    category: 'movement',
-    descriptionKey: 'commands.back.description',
-    examples: ['bk(100)', 'back(50)']
-  },
+  
 
   left: {
     name: 'left',
@@ -68,16 +69,6 @@ export const commandRegistry: CommandRegistry = {
     examples: ['left(90)', 'lt(45)', 'left(180)']
   },
 
-  lt: {
-    name: 'lt',
-    aliases: ['left'],
-    parameters: [
-      { name: 'degrees', type: 'number', required: true }
-    ],
-    category: 'movement',
-    descriptionKey: 'commands.left.description',
-    examples: ['lt(90)', 'left(45)']
-  },
 
   right: {
     name: 'right',
@@ -90,16 +81,6 @@ export const commandRegistry: CommandRegistry = {
     examples: ['right(90)', 'rt(45)', 'right(180)']
   },
 
-  rt: {
-    name: 'rt',
-    aliases: ['right'],
-    parameters: [
-      { name: 'degrees', type: 'number', required: true }
-    ],
-    category: 'movement',
-    descriptionKey: 'commands.right.description',
-    examples: ['rt(90)', 'right(45)']
-  },
 
   turn: {
     name: 'turn',

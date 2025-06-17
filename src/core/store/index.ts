@@ -1,5 +1,6 @@
 type AppState = {
   commandResult: string | null;
+  language: string;
 };
 
 type StateListener = () => void;
@@ -39,7 +40,10 @@ export class Store {
 
   reset() {
     localStorage.removeItem(this.STORAGE_KEY);
-    this.state = { commandResult: null };
+    this.state = { commandResult: null, language: 'en' };
     this.notify();
   }
 }
+
+// Global store instance
+export const store = new Store({ commandResult: null, language: 'en' });

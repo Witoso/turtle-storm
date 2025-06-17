@@ -3,7 +3,7 @@ import { Store } from '.';
 
 describe('Store', () => {
   it('should initialize with default state', () => {
-    const store = new Store({ commandResult: null });
-    expect(store.get()).toEqual({ commandResult: null });
+    const store = new Store({ commandResult: null, language: 'en' });
+    expect(store.get()).toEqual({ commandResult: null, language: 'en' });
   });
 });

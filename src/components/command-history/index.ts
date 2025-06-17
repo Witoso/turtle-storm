@@ -69,7 +69,7 @@ export class CommandHistory extends HTMLElement {
     this.listElement.innerHTML = '';
     this.commandsHistory.forEach((cmd) => {
       const commandItem = document.createElement('li');
-      commandItem.classList.add('command-item');
+      commandItem.classList.add('history-command-item');
       commandItem.textContent = cmd;
       this.listElement.appendChild(commandItem);
     });

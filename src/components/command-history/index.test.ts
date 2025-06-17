@@ -37,7 +37,7 @@ describe('CommandHistory', () => {
     eventBus.emit('command:execute', 'forward(100)');
     await new Promise(resolve => setTimeout(resolve, 10));
     
-    const commandItems = element.querySelectorAll('.command-item');
+    const commandItems = element.querySelectorAll('.history-command-item');
     expect(commandItems.length).toBe(1);
     expect(commandItems[0]?.textContent).toBe('forward(100)');
     expect(emitSpy).toHaveBeenCalledWith('turtle:draw', ['forward(100)']);
@@ -49,7 +49,7 @@ describe('CommandHistory', () => {
     eventBus.emit('command:execute', 'forward(50)');
     await new Promise(resolve => setTimeout(resolve, 10));
     
-    const commandItems = element.querySelectorAll('.command-item');
+    const commandItems = element.querySelectorAll('.history-command-item');
     expect(commandItems.length).toBe(3);
     expect(commandItems[0]?.textContent).toBe('forward(100)');
     expect(commandItems[1]?.textContent).toBe('right(90)');
@@ -69,7 +69,7 @@ describe('CommandHistory', () => {
     await new Promise(resolve => setTimeout(resolve, 10));
     
     // Verify history is cleared
-    const commandItems = element.querySelectorAll('.command-item');
+    const commandItems = element.querySelectorAll('.history-command-item');
     expect(commandItems.length).toBe(0);
   });
 
@@ -84,7 +84,7 @@ describe('CommandHistory', () => {
     await new Promise(resolve => setTimeout(resolve, 10));
     
     // Verify history is cleared
-    const commandItems = element.querySelectorAll('.command-item');
+    const commandItems = element.querySelectorAll('.history-command-item');
     expect(commandItems.length).toBe(0);
   });
 });

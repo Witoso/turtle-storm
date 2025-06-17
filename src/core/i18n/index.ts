@@ -1,21 +1,23 @@
 interface Translations {
   commands: Record<string, { description: string }>;
   categories: Record<string, string>;
+  ui: Record<string, string>;
 }
 
-let translations: Translations | null = null;
+const translationsCache: Record<string, Translations> = {};
 
 async function loadTranslations(locale: string = 'en'): Promise<Translations> {
-  if (translations) return translations;
+  if (translationsCache[locale]) return translationsCache[locale];
   
   try {
-    const response = await fetch(`/src/i18n/${locale}.json`);
-    translations = await response.json();
-    return translations!;
+    const response = await fetch(`/src/core/i18n/${locale}.json`);
+    const translations = await response.json();
+    translationsCache[locale] = translations;
+    return translations;
   } catch (error) {
     console.error('Failed to load translations:', error);
     // Fallback translations
-    return {
+    const fallback = {
       commands: {},
       categories: {
         movement: 'Movement',
@@ -24,45 +26,78 @@ async function loadTranslations(locale: string = 'en'): Promise<Translations> {
         appearance: 'Appearance',
         programmatic: 'Programming',
         custom: 'Custom'
-      }
+      },
+      ui: {}
     };
+    translationsCache[locale] = fallback;
+    return fallback;
   }
 }
 
-export class I18n {
-  private translations: Translations = { commands: {}, categories: {} };
+import type { EventBus, EventMap } from '../events';
+import type { Store } from '../store';
 
-  constructor() {
-    this.initialize();
+export class I18n {
+  private currentLocale: string = 'en';
+  private unsubscribeLanguageChange?: () => void;
+
+  constructor(private eventBus: EventBus<EventMap>, private store: Store) {
+    // Listen for language change requests
+    this.unsubscribeLanguageChange = eventBus.on('language:change', async (newLanguage: string) => {
+      await this.changeLanguage(newLanguage);
+    });
+
+    // Initialize with current language from store
+    const currentLanguage = store.get().language;
+    this.setLocale(currentLanguage);
   }
 
-  private async initialize() {
-    this.translations = await loadTranslations();
+  private async changeLanguage(newLanguage: string) {
+    try {
+      // Update store
+      this.store.set({ language: newLanguage });
+      
+      // Update i18n
+      await this.setLocale(newLanguage);
+      
+      // Notify all components that language has changed
+      this.eventBus.emit('language:changed', newLanguage);
+    } catch (error) {
+      console.error('Failed to change language:', error);
+    }
+  }
+
+  async setLocale(locale: string) {
+    this.currentLocale = locale;
+    await loadTranslations(locale);
+  }
+
+  destroy() {
+    this.unsubscribeLanguageChange?.();
   }
 
   async getCommandDescription(commandKey: string): Promise<string> {
-    if (Object.keys(this.translations.commands).length === 0) {
-      await this.initialize();
-    }
-    
-    return this.translations.commands[commandKey]?.description || `Description for ${commandKey}`;
+    const translations = await loadTranslations(this.currentLocale);
+    return translations.commands[commandKey]?.description || `Description for ${commandKey}`;
   }
 
   async getCategoryName(categoryKey: string): Promise<string> {
-    if (Object.keys(this.translations.categories).length === 0) {
-      await this.initialize();
-    }
-    
-    return this.translations.categories[categoryKey] || categoryKey;
+    const translations = await loadTranslations(this.currentLocale);
+    return translations.categories[categoryKey] || categoryKey;
   }
 
   async getAllTranslations(): Promise<Translations> {
-    if (Object.keys(this.translations.commands).length === 0) {
-      await this.initialize();
-    }
-    
-    return this.translations;
+    return await loadTranslations(this.currentLocale);
+  }
+
+  async getUIString(key: string): Promise<string> {
+    const translations = await loadTranslations(this.currentLocale);
+    return translations.ui[key] || key;
+  }
+
+  getCurrentLocale(): string {
+    return this.currentLocale;
   }
 }
 
-export const i18n = new I18n(); 
+// i18n instance will be created in main.ts with dependencies 
