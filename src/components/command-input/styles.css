@@ -1,0 +1,12 @@
+.error-display {
+  display: none;
+  color: #dc3545;
+  margin-bottom: var(--pico-spacing);
+  padding-left: var(--pico-spacing);
+  font-size: 0.875rem;
+  font-family: monospace;
+}
+
+.error-display.active {
+  display: block;
+} 

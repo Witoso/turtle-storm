@@ -49,15 +49,32 @@
   },
   "ui": {
     "availableCommands": "Dostępne polecenia",
+    "commands": "polecenia",
     "parameters": "Parametry",
     "examples": "Przykłady",
     "aliases": "Aliasy",
     "required": "wymagane",
+    "optional": "opcjonalne",
+    "commandHistory": "Historia poleceń",
+    "reset": "Resetuj",
+    "runButton": "Uruchom!",
+    "commandInputPlaceholder": "Wpisz polecenie, np. forward(100)",
+    "appTitle": "Turtle Storm ⚡️🐢⚡️",
+    "languageEnglish": "Angielski",
+    "languagePolish": "Polski",
     "movement": "Ruch",
     "drawing": "Rysowanie",
     "visual": "Wizualne",
     "appearance": "Wygląd",
     "programmatic": "Programowanie",
-    "custom": "Własne"
+    "custom": "Własne",
+    "validation": {
+      "invalidFormat": "Nieprawidłowy format polecenia. Oczekiwano: nazwaFunkcji(arg1, arg2, ...)",
+      "unknownCommand": "Nieznane polecenie: {command}",
+      "tooFewArgs": "Za mało argumentów dla {command}. Oczekiwano co najmniej {expected}, otrzymano {actual}",
+      "tooManyArgs": "Za dużo argumentów dla {command}. Oczekiwano co najwyżej {expected}, otrzymano {actual}",
+      "invalidType": "Nieprawidłowa wartość {type} dla parametru {param}: {value}",
+      "commandExecuted": "Polecenie wykonane pomyślnie"
+    }
   }
 } 

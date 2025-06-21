@@ -1,31 +1,28 @@
 import { commandRegistry } from '../../core/data/command-registry';
-import { i18n } from '../../main';
-import { eventBus } from '../../core/events';
+import { BaseComponent } from '../../core/components/base-component';
 import './styles.css';
 
-export class CommandList extends HTMLElement {
-  private unsubscribeLanguageChanged?: () => void;
-
-  connectedCallback() {
-    this.render();
-    this.unsubscribeLanguageChanged = eventBus.on('language:changed', () => {
-      this.render();
-    });
-  }
-
-  disconnectedCallback() {
-    this.unsubscribeLanguageChanged?.();
-  }
-
-  async render() {
+export class CommandList extends BaseComponent {
+  protected async render(): Promise<void> {
     // Clear existing content completely
     this.innerHTML = '';
     
+    // Prefetch all needed UI strings
+    const [availableCommands, commandsLabel, aliasesLabel, parametersLabel, requiredLabel, optionalLabel, examplesLabel] = await Promise.all([
+      this.i18n.getUIString('availableCommands'),
+      this.i18n.getUIString('commands'),
+      this.i18n.getUIString('aliases'),
+      this.i18n.getUIString('parameters'),
+      this.i18n.getUIString('required'),
+      this.i18n.getUIString('optional'),
+      this.i18n.getUIString('examples')
+    ]);
+
     const container = document.createElement('div');
     container.className = 'command-list';
     
     const title = document.createElement('h3');
-    title.textContent = 'Available Commands';
+    title.textContent = availableCommands;
     container.appendChild(title);
 
     // Group commands by category
@@ -40,7 +37,7 @@ export class CommandList extends HTMLElement {
     // Sort category keys
     const sortedCategoryKeys = Object.keys(categories).sort();
     // Fetch all category names in parallel
-    const categoryNames = await Promise.all(sortedCategoryKeys.map(key => i18n.getCategoryName(key)));
+    const categoryNames = await Promise.all(sortedCategoryKeys.map(key => this.i18n.getCategoryName(key)));
 
     for (let i = 0; i < sortedCategoryKeys.length; i++) {
       const categoryKey = sortedCategoryKeys[i];
@@ -51,7 +48,7 @@ export class CommandList extends HTMLElement {
       accordion.className = 'command-category';
       
       const summary = document.createElement('summary');
-      summary.innerHTML = `<strong>${categoryName}</strong> <small>(${commands.length} commands)</small>`;
+      summary.innerHTML = `<strong>${categoryName}</strong> <small>(${commands.length} ${commandsLabel})</small>`;
       accordion.appendChild(summary);
 
       const commandsContainer = document.createElement('div');
@@ -61,22 +58,22 @@ export class CommandList extends HTMLElement {
         const commandItem = document.createElement('div');
         commandItem.className = 'list-command-item';
         
-        const description = await i18n.getCommandDescription(cmd.name);
+        const description = await this.i18n.getCommandDescription(cmd.name);
         
         commandItem.innerHTML = `
           <div class="command-header">
             <code class="command-name">${cmd.name}</code>
-            ${cmd.aliases.length > 0 ? `<small class="aliases">Aliases: ${cmd.aliases.join(', ')}</small>` : ''}
+            ${cmd.aliases.length > 0 ? `<small class="aliases">${aliasesLabel}: ${cmd.aliases.join(', ')}</small>` : ''}
           </div>
           <p class="command-description">${description}</p>
           ${cmd.parameters.length > 0 ? `
             <div class="command-parameters">
-              <strong>Parameters:</strong>
+              <strong>${parametersLabel}:</strong>
               <ul>
                 ${cmd.parameters.map(param => `
                   <li>
                     <code>${param.name}</code> (${param.type})
-                    ${param.required ? ' <em>required</em>' : ' <em>optional</em>'}
+                    ${param.required ? ` <em>${requiredLabel}</em>` : ` <em>${optionalLabel || 'optional'}</em>`}
                     ${param.default !== undefined ? ` - default: ${param.default}` : ''}
                   </li>
                 `).join('')}
@@ -85,7 +82,7 @@ export class CommandList extends HTMLElement {
           ` : ''}
           ${cmd.examples.length > 0 ? `
             <div class="command-examples">
-              <strong>Examples:</strong>
+              <strong>${examplesLabel}:</strong>
               <ul>
                 ${cmd.examples.map(example => `<li><code>${example}</code></li>`).join('')}
               </ul>

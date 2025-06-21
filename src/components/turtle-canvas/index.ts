@@ -1,32 +1,31 @@
 import RealTurtle from "real-turtle";
-import { eventBus } from "../../core/events";
+import { BaseComponent } from "../../core/components/base-component";
 import "./styles.css";
 
-export class TurtleCanvas extends HTMLElement {
+export class TurtleCanvas extends BaseComponent {
   private turtle: RealTurtle | undefined;
   private canvas: HTMLCanvasElement | undefined;
 
-  constructor() {
-    super();
-
-    eventBus.on("turtle:draw", (commands: string[]) => {
-      this.executeCommands(commands);
-    });
-
-    eventBus.on("reset", () => {
-      this.createTurtle();
-    });
-  }
-
-  connectedCallback() {
+  protected async render(): Promise<void> {
     this.canvas = document.createElement('canvas');
     this.canvas.id = 'turtle-canvas';
     this.appendChild(this.canvas);
     this.executeCommands([]); // Empty command list to initialize the turtle on the canvas.
   }
 
-  disconnectedCallback() {
+  protected setupEventListeners(): void {
+    this.eventBus.on("turtle:draw", (commands: string[]) => {
+      this.executeCommands(commands);
+    });
+
+    this.eventBus.on("reset", () => {
+      this.createTurtle();
+    });
+  }
+
+  protected cleanup(): void {
     this.canvas?.remove();
+    super.cleanup();
   }
 
   private executeCommands(commands: string[]) {
@@ -74,6 +73,5 @@ export class TurtleCanvas extends HTMLElement {
 
     this.turtle.setSize(50 * scale);
     this.turtle.setLineWidth(5);
-
   }
 }

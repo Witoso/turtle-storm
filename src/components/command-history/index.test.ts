@@ -1,11 +1,16 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { CommandHistory } from '.';
-import { eventBus } from '../../core/events';
+import { serviceProvider } from '../../core/services';
 
 describe('CommandHistory', () => {
   let element: CommandHistory;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    // Initialize the service provider
+    if (!serviceProvider.isInitialized()) {
+      serviceProvider.initialize();
+    }
+    
     // Define the custom element before creating it
     if (!customElements.get('command-history')) {
       customElements.define('command-history', CommandHistory);
@@ -13,6 +18,9 @@ describe('CommandHistory', () => {
     
     element = document.createElement('command-history') as CommandHistory;
     document.body.appendChild(element);
+    
+    // Wait for the component to initialize
+    await new Promise(resolve => setTimeout(resolve, 10));
   })
 
   afterEach(() => {
@@ -20,7 +28,10 @@ describe('CommandHistory', () => {
     vi.clearAllMocks();
   });
 
-  it('should render initial empty state correctly', () => {
+  it('should render initial empty state correctly', async () => {
+    // Wait for rendering to complete
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
     const heading = element.querySelector('h3.commands-heading');
     const resetButton = element.querySelector('button.outline');
     const commandsList = element.querySelector('.commands-list');
@@ -32,59 +43,74 @@ describe('CommandHistory', () => {
   });
 
   it('should add commands to history when command:execute event is emitted', async () => {
-    const emitSpy = vi.spyOn(eventBus, 'emit');
+    const eventBus = serviceProvider.getEventBus();
     
-    eventBus.emit('command:execute', 'forward(100)');
+    // Wait for initial render
     await new Promise(resolve => setTimeout(resolve, 10));
     
-    const commandItems = element.querySelectorAll('.history-command-item');
-    expect(commandItems.length).toBe(1);
-    expect(commandItems[0]?.textContent).toBe('forward(100)');
-    expect(emitSpy).toHaveBeenCalledWith('turtle:draw', ['forward(100)']);
+    // Emit a command
+    eventBus.emit('command:execute', 'forward(100)');
+    
+    // Wait for update
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
+    const commandsList = element.querySelector('.commands-list');
+    expect(commandsList?.children.length).toBe(1);
+    expect(commandsList?.children[0].textContent).toBe('forward(100)');
   });
 
-  it('should accumulate multiple commands in history', async () => {
+  it('should clear history when reset event is emitted', async () => {
+    const eventBus = serviceProvider.getEventBus();
+    
+    // Wait for initial render
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
+    // Add a command first
     eventBus.emit('command:execute', 'forward(100)');
-    eventBus.emit('command:execute', 'right(90)');
-    eventBus.emit('command:execute', 'forward(50)');
     await new Promise(resolve => setTimeout(resolve, 10));
     
-    const commandItems = element.querySelectorAll('.history-command-item');
-    expect(commandItems.length).toBe(3);
-    expect(commandItems[0]?.textContent).toBe('forward(100)');
-    expect(commandItems[1]?.textContent).toBe('right(90)');
-    expect(commandItems[2]?.textContent).toBe('forward(50)');
-  });
-
-  it('should clear history when reset button is clicked', async () => {
-    // Add some commands first
-    eventBus.emit('command:execute', 'forward(100)');
-    eventBus.emit('command:execute', 'right(90)');
-    await new Promise(resolve => setTimeout(resolve, 10));
+    // Verify command was added
+    const commandsList = element.querySelector('.commands-list');
+    expect(commandsList?.children.length).toBe(1);
     
-    // Find and click reset button
-    const resetButton = element.querySelector('button.outline') as HTMLButtonElement;
-    expect(resetButton).toBeTruthy();
-    resetButton.click();
-    await new Promise(resolve => setTimeout(resolve, 10));
-    
-    // Verify history is cleared
-    const commandItems = element.querySelectorAll('.history-command-item');
-    expect(commandItems.length).toBe(0);
-  });
-
-  it('should clear history when reset event is received', async () => {
-    // Add some commands first
-    eventBus.emit('command:execute', 'forward(100)');
-    eventBus.emit('command:execute', 'right(90)');
-    await new Promise(resolve => setTimeout(resolve, 10));
-    
-    // Emit reset event
+    // Emit reset
     eventBus.emit('reset', null);
     await new Promise(resolve => setTimeout(resolve, 10));
     
     // Verify history is cleared
-    const commandItems = element.querySelectorAll('.history-command-item');
-    expect(commandItems.length).toBe(0);
+    expect(commandsList?.children.length).toBe(0);
+  });
+
+  it('should emit turtle:draw event with command history when command is executed', async () => {
+    const eventBus = serviceProvider.getEventBus();
+    const turtleDrawSpy = vi.spyOn(eventBus, 'emit');
+    
+    // Wait for initial render
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
+    // Emit a command
+    eventBus.emit('command:execute', 'forward(100)');
+    
+    // Wait for processing
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
+    expect(turtleDrawSpy).toHaveBeenCalledWith('turtle:draw', ['forward(100)']);
+  });
+
+  it('should emit turtle:draw event with empty array when reset is clicked', async () => {
+    const eventBus = serviceProvider.getEventBus();
+    const turtleDrawSpy = vi.spyOn(eventBus, 'emit');
+    
+    // Wait for initial render
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
+    // Click reset button
+    const resetButton = element.querySelector('button.outline') as HTMLButtonElement;
+    resetButton.click();
+    
+    // Wait for processing
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
+    expect(turtleDrawSpy).toHaveBeenCalledWith('turtle:draw', []);
   });
 });

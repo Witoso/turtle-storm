@@ -1,11 +1,42 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CommandValidator } from './index.js';
+import { I18n } from '../i18n';
+import { EventBus } from '../events';
+import { Store } from '../store';
 
 describe('CommandValidator', () => {
   let validator: CommandValidator;
+  let i18n: I18n;
 
   beforeEach(() => {
-    validator = new CommandValidator();
+    // Create minimal services for testing
+    const eventBus = new EventBus();
+    const store = new Store({ commandResult: null, language: 'en' });
+    i18n = new I18n(eventBus, store);
+    
+    // Mock the getUIString method to return expected validation messages
+    vi.spyOn(i18n, 'getUIString').mockImplementation(async (key: string, parameters?: Record<string, string>) => {
+      const messages: Record<string, string> = {
+        'validation.invalidFormat': 'Invalid command format. Expected: functionName(arg1, arg2, ...)',
+        'validation.unknownCommand': `Unknown command: ${parameters?.command || ''}`,
+        'validation.tooFewArgs': `Too few arguments for ${parameters?.command || ''}. Expected at least ${parameters?.expected || ''}, got ${parameters?.actual || ''}`,
+        'validation.tooManyArgs': `Too many arguments for ${parameters?.command || ''}. Expected at most ${parameters?.expected || ''}, got ${parameters?.actual || ''}`,
+        'validation.invalidType': `Invalid ${parameters?.type || ''} value for parameter ${parameters?.param || ''}: ${parameters?.value || ''}`,
+        'validation.commandExecuted': 'Command executed successfully'
+      };
+      
+      let message = messages[key] || key;
+      
+      if (parameters) {
+        for (const [param, value] of Object.entries(parameters)) {
+          message = message.replace(new RegExp(`\\{${param}\\}`, 'g'), value);
+        }
+      }
+      
+      return message;
+    });
+    
+    validator = new CommandValidator(i18n);
   });
 
   describe('parseCommand', () => {
@@ -55,7 +86,7 @@ describe('CommandValidator', () => {
     it('should reject unknown commands', async () => {
       const result = await validator.validateCommand('unknownCommand()');
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain('Unknown command: unknownCommand');
+      expect(result.errors[0]).toContain('Unknown command: unknownCommand');
     });
 
     it('should validate parameter count - too few', async () => {

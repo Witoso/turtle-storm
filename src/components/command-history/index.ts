@@ -1,36 +1,29 @@
-import { eventBus } from "../../core/events";
+import { BaseComponent } from "../../core/components/base-component";
 import "./styles.css";
 
-export class CommandHistory extends HTMLElement {
+export class CommandHistory extends BaseComponent {
   private commandsHistory: string[] = [];
   private listElement!: HTMLOListElement;
 
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    this.initialize();
-    this.setupEventListeners();
-  }
-
-  private initialize() {
+  protected async render(): Promise<void> {
+    this.innerHTML = '';
+    
     // Create header container
     const headerContainer = document.createElement('div');
     headerContainer.classList.add('header-container');
     
     // Create heading
     const heading = document.createElement('h3');
-    heading.textContent = 'Command History';
+    heading.textContent = await this.i18n.getUIString('commandHistory');
     heading.classList.add('commands-heading');
     
     // Create reset button
     const reset = document.createElement("button");
-    reset.textContent = "Reset";
+    reset.textContent = await this.i18n.getUIString('reset');
     reset.classList.add("outline", "reset-button");
     
     reset.addEventListener("click", () => {
-      eventBus.emit("reset", null);
+      this.eventBus.emit("reset", null);
     });
     
     // Append elements to header container
@@ -43,16 +36,16 @@ export class CommandHistory extends HTMLElement {
     this.append(this.listElement);
   }
 
-  private setupEventListeners() {
-    eventBus.on("command:execute", (cmd) => {
+  protected setupEventListeners(): void {
+    this.eventBus.on("command:execute", (cmd) => {
       this.addCommand(cmd);
       this.executeCommands();
     });
 
-    eventBus.on("reset", () => {
+    this.eventBus.on("reset", () => {
       this.commandsHistory = [];
       this.renderCommands();
-      eventBus.emit("turtle:draw", []);
+      this.eventBus.emit("turtle:draw", []);
     });
   }
 
@@ -62,7 +55,7 @@ export class CommandHistory extends HTMLElement {
   }
 
   private executeCommands() {
-    eventBus.emit("turtle:draw", this.commandsHistory);
+    this.eventBus.emit("turtle:draw", this.commandsHistory);
   }
 
   private renderCommands() {

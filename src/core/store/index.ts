@@ -44,6 +44,3 @@ export class Store {
     this.notify();
   }
 }
-
-// Global store instance
-export const store = new Store({ commandResult: null, language: 'en' });

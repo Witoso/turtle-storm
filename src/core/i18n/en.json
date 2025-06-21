@@ -49,15 +49,32 @@
   },
   "ui": {
     "availableCommands": "Available Commands",
+    "commands": "commands",
     "parameters": "Parameters",
     "examples": "Examples",
     "aliases": "Aliases",
     "required": "required",
+    "optional": "optional",
+    "commandHistory": "Command History",
+    "reset": "Reset",
+    "runButton": "Run!",
+    "commandInputPlaceholder": "Enter command e.g., forward(100)",
+    "appTitle": "Turtle Storm ⚡️🐢⚡️",
+    "languageEnglish": "English",
+    "languagePolish": "Polski",
     "movement": "Movement",
     "drawing": "Drawing",
     "visual": "Visual",
     "appearance": "Appearance",
     "programmatic": "Programming",
-    "custom": "Custom"
+    "custom": "Custom",
+    "validation": {
+      "invalidFormat": "Invalid command format. Expected: functionName(arg1, arg2, ...)",
+      "unknownCommand": "Unknown command: {command}",
+      "tooFewArgs": "Too few arguments for {command}. Expected at least {expected}, got {actual}",
+      "tooManyArgs": "Too many arguments for {command}. Expected at most {expected}, got {actual}",
+      "invalidType": "Invalid {type} value for parameter {param}: {value}",
+      "commandExecuted": "Command executed successfully"
+    }
   }
 } 

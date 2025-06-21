@@ -19,7 +19,7 @@ export interface CommandParameter {
   }
   
 
-
+// Commenting out commands that are not needed for now.
 export const commandRegistry: CommandRegistry = {
   // Movement commands
   forward: {
@@ -34,16 +34,16 @@ export const commandRegistry: CommandRegistry = {
   },
   
 
-  move: {
-    name: 'move',
-    aliases: ['forward', 'fd'],
-    parameters: [
-      { name: 'steps', type: 'number', required: true }
-    ],
-    category: 'movement',
-    descriptionKey: 'commands.forward.description',
-    examples: ['move(100)', 'move(75)']
-  },
+//   move: {
+//     name: 'move',
+//     aliases: ['forward', 'fd'],
+//     parameters: [
+//       { name: 'steps', type: 'number', required: true }
+//     ],
+//     category: 'movement',
+//     descriptionKey: 'commands.forward.description',
+//     examples: ['move(100)', 'move(75)']
+//   },
 
   back: {
     name: 'back',
@@ -106,14 +106,14 @@ export const commandRegistry: CommandRegistry = {
     examples: ['arc(50, 90)', 'arc(100, 180)', 'arc(30, 45, true)']
   },
 
-  start: {
-    name: 'start',
-    aliases: [],
-    parameters: [],
-    category: 'programmatic',
-    descriptionKey: 'commands.start.description',
-    examples: ['start()']
-  },
+//   start: {
+//     name: 'start',
+//     aliases: [],
+//     parameters: [],
+//     category: 'programmatic',
+//     descriptionKey: 'commands.start.description',
+//     examples: ['start()']
+//   },
 
   // Drawing commands
   penDown: {
@@ -204,31 +204,31 @@ export const commandRegistry: CommandRegistry = {
     examples: ['setStrokeStyle("red")', 'setStrokeStyle("#00FF00")', 'setStrokeStyle("blue")']
   },
 
-  setStrokeColorRGB: {
-    name: 'setStrokeColorRGB',
-    aliases: [],
-    parameters: [
-      { name: 'r', type: 'number', required: true },
-      { name: 'g', type: 'number', required: true },
-      { name: 'b', type: 'number', required: true }
-    ],
-    category: 'visual',
-    descriptionKey: 'commands.setStrokeColorRGB.description',
-    examples: ['setStrokeColorRGB(255, 0, 0)', 'setStrokeColorRGB(0, 255, 0)', 'setStrokeColorRGB(0, 0, 255)']
-  },
+//   setStrokeColorRGB: {
+//     name: 'setStrokeColorRGB',
+//     aliases: [],
+//     parameters: [
+//       { name: 'r', type: 'number', required: true },
+//       { name: 'g', type: 'number', required: true },
+//       { name: 'b', type: 'number', required: true }
+//     ],
+//     category: 'visual',
+//     descriptionKey: 'commands.setStrokeColorRGB.description',
+//     examples: ['setStrokeColorRGB(255, 0, 0)', 'setStrokeColorRGB(0, 255, 0)', 'setStrokeColorRGB(0, 0, 255)']
+//   },
 
-  setStrokeColorHSL: {
-    name: 'setStrokeColorHSL',
-    aliases: [],
-    parameters: [
-      { name: 'h', type: 'number', required: true },
-      { name: 's', type: 'number', required: true },
-      { name: 'l', type: 'number', required: true }
-    ],
-    category: 'visual',
-    descriptionKey: 'commands.setStrokeColorHSL.description',
-    examples: ['setStrokeColorHSL(0, 100, 50)', 'setStrokeColorHSL(120, 100, 50)', 'setStrokeColorHSL(240, 100, 50)']
-  },
+//   setStrokeColorHSL: {
+//     name: 'setStrokeColorHSL',
+//     aliases: [],
+//     parameters: [
+//       { name: 'h', type: 'number', required: true },
+//       { name: 's', type: 'number', required: true },
+//       { name: 'l', type: 'number', required: true }
+//     ],
+//     category: 'visual',
+//     descriptionKey: 'commands.setStrokeColorHSL.description',
+//     examples: ['setStrokeColorHSL(0, 100, 50)', 'setStrokeColorHSL(120, 100, 50)', 'setStrokeColorHSL(240, 100, 50)']
+//   },
 
   setFillStyle: {
     name: 'setFillStyle',
@@ -331,27 +331,27 @@ export const commandRegistry: CommandRegistry = {
     examples: ['setSize(50)', 'setSize(25)', 'setSize(100)']
   },
 
-  setImage: {
-    name: 'setImage',
-    aliases: [],
-    parameters: [
-      { name: 'url', type: 'string', required: true }
-    ],
-    category: 'appearance',
-    descriptionKey: 'commands.setImage.description',
-    examples: ['setImage("./turtle.png")', 'setImage("./my-turtle.gif")']
-  },
+//   setImage: {
+//     name: 'setImage',
+//     aliases: [],
+//     parameters: [
+//       { name: 'url', type: 'string', required: true }
+//     ],
+//     category: 'appearance',
+//     descriptionKey: 'commands.setImage.description',
+//     examples: ['setImage("./turtle.png")', 'setImage("./my-turtle.gif")']
+//   },
 
-  setIcon: {
-    name: 'setIcon',
-    aliases: [],
-    parameters: [
-      { name: 'icon', type: 'string', required: true }
-    ],
-    category: 'appearance',
-    descriptionKey: 'commands.setIcon.description',
-    examples: ['setIcon("🐢")', 'setIcon("⭐")', 'setIcon("🚀")']
-  },
+//   setIcon: {
+//     name: 'setIcon',
+//     aliases: [],
+//     parameters: [
+//       { name: 'icon', type: 'string', required: true }
+//     ],
+//     category: 'appearance',
+//     descriptionKey: 'commands.setIcon.description',
+//     examples: ['setIcon("🐢")', 'setIcon("⭐")', 'setIcon("🚀")']
+//   },
 
   // Programmatic functions
   sleep: {
@@ -360,28 +360,28 @@ export const commandRegistry: CommandRegistry = {
     parameters: [
       { name: 'milliseconds', type: 'number', required: true }
     ],
-    category: 'programmatic',
+    category: 'movement',
     descriptionKey: 'commands.sleep.description',
     examples: ['sleep(1000)', 'sleep(500)', 'sleep(2000)']
   },
 
-  eval: {
-    name: 'eval',
-    aliases: [],
-    parameters: [
-      { name: 'func', type: 'string', required: true }
-    ],
-    category: 'programmatic',
-    descriptionKey: 'commands.eval.description',
-    examples: ['eval("console.log(\'Hello\')")']
-  },
+//   eval: {
+//     name: 'eval',
+//     aliases: [],
+//     parameters: [
+//       { name: 'func', type: 'string', required: true }
+//     ],
+//     category: 'programmatic',
+//     descriptionKey: 'commands.eval.description',
+//     examples: ['eval("console.log(\'Hello\')")']
+//   },
 
   // Custom functions
   hide: {
     name: 'hide',
     aliases: [],
     parameters: [],
-    category: 'custom',
+    category: 'appearance',
     descriptionKey: 'commands.hide.description',
     examples: ['hide()']
   },
@@ -390,7 +390,7 @@ export const commandRegistry: CommandRegistry = {
     name: 'show',
     aliases: [],
     parameters: [],
-    category: 'custom',
+    category: 'appearance',
     descriptionKey: 'commands.show.description',
     examples: ['show()']
   }

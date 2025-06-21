@@ -49,5 +49,3 @@ export class EventBus<Events extends Record<string, unknown>> {
     }
   }
 }
-
-export const eventBus = new EventBus<EventMap>();

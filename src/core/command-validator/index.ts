@@ -1,5 +1,6 @@
 import type { CommandRegistry } from '../data/command-registry.js';
 import { commandRegistry } from '../data/command-registry.js';
+import type { I18n } from '../i18n';
 
 export interface ValidationResult {
 	isValid: boolean;
@@ -12,6 +13,11 @@ export interface ValidationResult {
 
 export class CommandValidator {
   private registry: CommandRegistry = commandRegistry;
+  private i18n: I18n;
+
+  constructor(i18n: I18n) {
+    this.i18n = i18n;
+  }
 
   /**
    * Parse a command string like "forward(100)" into its parts
@@ -82,7 +88,7 @@ export class CommandValidator {
     if (!parsed) {
       return {
         isValid: false,
-        errors: ['Invalid command format. Expected: functionName(arg1, arg2, ...)']
+        errors: [await this.i18n.getUIString("validation.invalidFormat")]
       };
     }
 
@@ -92,7 +98,7 @@ export class CommandValidator {
     if (!commandMeta) {
       return {
         isValid: false,
-        errors: [`Unknown command: ${name}`]
+        errors: [await this.i18n.getUIString("validation.unknownCommand", { command: name })]
       };
     }
 
@@ -101,11 +107,19 @@ export class CommandValidator {
     const totalParams = commandMeta.parameters.length;
 
     if (args.length < requiredParams.length) {
-      errors.push(`Too few arguments for ${name}. Expected at least ${requiredParams.length}, got ${args.length}`);
+      errors.push(await this.i18n.getUIString("validation.tooFewArgs", { 
+        command: name, 
+        expected: requiredParams.length.toString(), 
+        actual: args.length.toString() 
+      }));
     }
 
     if (args.length > totalParams) {
-      errors.push(`Too many arguments for ${name}. Expected at most ${totalParams}, got ${args.length}`);
+      errors.push(await this.i18n.getUIString("validation.tooManyArgs", { 
+        command: name, 
+        expected: totalParams.toString(), 
+        actual: args.length.toString() 
+      }));
     }
 
     // Validate parameter types
@@ -119,7 +133,11 @@ export class CommandValidator {
         const converted = this.convertArgument(argValue, param.type);
 
         if (converted === null && param.required) {
-          errors.push(`Invalid ${param.type} value for parameter ${param.name}: ${argValue}`);
+          errors.push(await this.i18n.getUIString("validation.invalidType", { 
+            type: param.type, 
+            param: param.name, 
+            value: argValue 
+          }));
         } else if (converted !== null) {
           convertedArgs.push(converted);
         }
@@ -186,7 +204,4 @@ export class CommandValidator {
 
     return categories;
   }
-}
-
-// Singleton instance
-export const commandValidator = new CommandValidator(); 
+} 
