@@ -28,6 +28,7 @@ export class CommandInput extends BaseComponent {
     const form = this.querySelector("form");
     const errorDisplay = this.querySelector(".error-display") as HTMLDivElement;
     if (!form || !errorDisplay) return;
+	const input = form.querySelector("input") as HTMLInputElement;
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -43,6 +44,7 @@ export class CommandInput extends BaseComponent {
           errorDisplay.classList.remove("active");
           errorDisplay.innerHTML = "";
           
+        input.value = "";
           // Execute the command
           this.eventBus.emit("command:execute", data.command);
         } else {
@@ -54,10 +56,6 @@ export class CommandInput extends BaseComponent {
         }
       }
 
-      const input = form.querySelector("input") as HTMLInputElement;
-      if (input) {
-        input.value = "";
-      }
     });
   }
 }

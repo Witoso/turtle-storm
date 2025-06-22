@@ -34,8 +34,10 @@ export class CommandList extends BaseComponent {
       categories[cmd.category].push(cmd);
     });
 
-    // Sort category keys
-    const sortedCategoryKeys = Object.keys(categories).sort();
+    // Custom category order: movement, drawing, appearance, visual, programmatic, custom
+    const categoryOrder = ['movement', 'drawing', 'appearance', 'visual', 'programmatic', 'custom'];
+    const sortedCategoryKeys = categoryOrder.filter(key => categories[key]);
+    
     // Fetch all category names in parallel
     const categoryNames = await Promise.all(sortedCategoryKeys.map(key => this.i18n.getCategoryName(key)));
 

@@ -17,10 +17,6 @@
   margin: 0;
 }
 
-.command-category summary:hover {
-  background: var(--pico-secondary-background);
-}
-
 .command-category[open] summary {
   border-bottom: 1px solid var(--pico-border-color);
   border-radius: var(--pico-border-radius) var(--pico-border-radius) 0 0;

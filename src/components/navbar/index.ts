@@ -16,7 +16,7 @@ export class Navbar extends BaseComponent {
         <ul>
           <li>
             <details class="dropdown">
-              <summary role="button" class="secondary">
+              <summary>
                 🌐 <span id="current-language">${languageNames[currentLanguage]}</span>
               </summary>
               <ul id="language-menu">
