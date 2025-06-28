@@ -28,10 +28,56 @@
   font-family: var(--pico-font-family-monospace);
   font-size: 0.98em;
   background: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .history-command-item:last-child {
   border-bottom: none;
+}
+
+.command-text {
+  flex: 1;
+  word-break: break-all;
+}
+
+.command-buttons {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.command-button {
+  background: none;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  min-width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.command-button:hover {
+  background-color: var(--pico-muted-background);
+  border-color: var(--pico-primary);
+}
+
+.redo-button:hover {
+  background-color: var(--pico-primary);
+  color: var(--pico-primary-inverse);
+}
+
+.delete-button:hover {
+  background-color: var(--pico-del-color);
+  color: var(--pico-del-inverse);
+  border-color: var(--pico-del-color);
 }
 
 command-history {

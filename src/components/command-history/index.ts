@@ -60,11 +60,59 @@ export class CommandHistory extends BaseComponent {
 
   private renderCommands() {
     this.listElement.innerHTML = '';
-    this.commandsHistory.forEach((cmd) => {
+    this.commandsHistory.forEach((cmd, index) => {
       const commandItem = document.createElement('li');
       commandItem.classList.add('history-command-item');
-      commandItem.textContent = cmd;
+      
+      // Create number span
+      const numberSpan = document.createElement('span');
+      numberSpan.classList.add('command-number');
+      numberSpan.textContent = (index + 1).toString() + '.';
+      
+      // Create command text container
+      const commandText = document.createElement('span');
+      commandText.classList.add('command-text');
+      commandText.textContent = cmd;
+      
+      // Create buttons container
+      const buttonsContainer = document.createElement('div');
+      buttonsContainer.classList.add('command-buttons');
+      
+      // Create redo button
+      const redoButton = document.createElement('button');
+      redoButton.innerHTML = '🔄';
+      redoButton.classList.add('command-button', 'redo-button');
+      redoButton.title = 'Redo this command';
+      redoButton.addEventListener('click', () => {
+        this.redoCommand(index);
+      });
+      
+      // Create delete button
+      const deleteButton = document.createElement('button');
+      deleteButton.innerHTML = '🗑️';
+      deleteButton.classList.add('command-button', 'delete-button');
+      deleteButton.title = 'Delete this command';
+      deleteButton.addEventListener('click', () => {
+        this.deleteCommand(index);
+      });
+      
+      // Append buttons to container
+      buttonsContainer.append(redoButton, deleteButton);
+      
+      // Append number, text, and buttons to command item
+      commandItem.append(numberSpan, commandText, buttonsContainer);
       this.listElement.appendChild(commandItem);
     });
+  }
+
+  private redoCommand(index: number) {
+    const command = this.commandsHistory[index];
+    this.eventBus.emit("command:execute", command);
+  }
+
+  private deleteCommand(index: number) {
+    this.commandsHistory.splice(index, 1);
+    this.renderCommands();
+    this.executeCommands();
   }
 }
