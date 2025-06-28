@@ -1,4 +1,4 @@
-import { getEventBus, getI18n, getStore, type AppServices } from '../services';
+import { getEventBus, getI18n, getStore, getCommandValidator, type AppServices } from '../services';
 import type { EventBus, EventMap } from '../events';
 import type { Store } from '../store';
 import type { I18n } from '../i18n';
@@ -46,6 +46,8 @@ export abstract class BaseComponent extends HTMLElement {
   protected setupLanguageListener(): void {
     this.unsubscribeLanguageChanged = this.eventBus.on('language:changed', async () => {
       await this.render();
+      // Re-attach event listeners after re-rendering since DOM elements are replaced
+      this.setupEventListeners();
     });
   }
 
@@ -63,7 +65,8 @@ export abstract class BaseComponent extends HTMLElement {
     return {
       eventBus: this.eventBus,
       store: this.store,
-      i18n: this.i18n
+      i18n: this.i18n,
+      commandValidator: getCommandValidator()
     };
   }
 } 

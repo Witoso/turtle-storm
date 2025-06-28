@@ -34,8 +34,6 @@ command-history {
   flex: 1;
   overflow: auto;
   padding: var(--pico-spacing);
-  border: var(--pico-border-width) solid var(--pico-muted-border-color);
-  border-radius: var(--pico-border-radius);
   background-color: var(--pico-background-color);
   margin-left: var(--pico-spacing);
 }

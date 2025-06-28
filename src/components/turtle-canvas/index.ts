@@ -23,6 +23,11 @@ export class TurtleCanvas extends BaseComponent {
     });
   }
 
+  protected setupLanguageListener(): void {
+    // TurtleCanvas doesn't need to re-render on language changes
+    // since it doesn't display any text content
+  }
+
   protected cleanup(): void {
     this.canvas?.remove();
     super.cleanup();

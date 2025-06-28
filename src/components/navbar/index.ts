@@ -63,6 +63,8 @@ export class Navbar extends BaseComponent {
     // Override to also update the language select when language changes
     this.unsubscribeLanguageChanged = this.eventBus.on('language:changed', async () => {
       await this.render();
+      // Re-attach event listeners after re-rendering
+      this.attachEventListeners();
       await this.updateLanguageSelect();
     });
   }

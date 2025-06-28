@@ -3,6 +3,7 @@ import { CommandInput } from "./components/command-input";
 import { TurtleCanvas } from "./components/turtle-canvas";
 import { CommandList } from "./components/command-list";
 import { Navbar } from "./components/navbar";
+import { CommandSwitcher } from "./components/command-switcher";
 import { serviceProvider } from "./core/services";
 
 import "@picocss/pico/css/pico.css";
@@ -17,3 +18,4 @@ customElements.define("command-input", CommandInput);
 customElements.define("turtle-canvas", TurtleCanvas);
 customElements.define("command-list", CommandList);
 customElements.define("app-navbar", Navbar);
+customElements.define("command-switcher", CommandSwitcher);
