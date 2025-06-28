@@ -76,7 +76,7 @@ export class TurtleCanvas extends BaseComponent {
 
 	this.turtle.setImage("./turtle.png");
 
-    this.turtle.setSize(50 * scale);
+    this.turtle.setSize(30 * scale);
     this.turtle.setLineWidth(5);
   }
 }

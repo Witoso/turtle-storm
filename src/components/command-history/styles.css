@@ -2,15 +2,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--pico-spacing);
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
 }
 
 .commands-heading {
   margin: 0;
-  padding-bottom: var(--pico-spacing-s);
-  border-bottom: var(--pico-border-width) solid var(--pico-muted-border-color);
-  font-size: 1.2em;
+  padding-bottom: 0.25rem;
+  border-bottom: none;
+  font-size: 1.1em;
   color: var(--pico-color);
+  font-weight: 600;
 }
 
 .commands-list {
@@ -21,9 +23,11 @@
 }
 
 .history-command-item {
-  padding: var(--pico-spacing-s);
-  border-bottom: var(--pico-border-width) solid var(--pico-muted-border-color);
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
   font-family: var(--pico-font-family-monospace);
+  font-size: 0.98em;
+  background: none;
 }
 
 .history-command-item:last-child {
@@ -33,11 +37,13 @@
 command-history {
   flex: 1;
   overflow: auto;
-  padding: var(--pico-spacing);
-  background-color: var(--pico-background-color);
-  margin-left: var(--pico-spacing);
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  background: none;
+  margin-left: 0;
 }
 
 .reset-button {
-  margin-left: var(--pico-spacing);
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.95em;
 }
